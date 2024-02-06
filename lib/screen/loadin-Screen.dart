@@ -1,3 +1,4 @@
+import 'package:climate/locagtion.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 class LoadinScreen extends StatefulWidget {
@@ -14,8 +15,10 @@ class _LoadinScreenState extends State<LoadinScreen> {
     getlocation();
   }
   Future<void> getlocation() async {
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    print(position);
+    Location location = Location();
+    await location.getCurrentLocation();
+    print(location.latitude);
+    print(location.longitude);
   }
 
 
@@ -23,12 +26,21 @@ class _LoadinScreenState extends State<LoadinScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String MyMargin = '15';
-    return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(double.parse(MyMargin)),
-        color: Colors.red,
-      ),
-    );
-  }
+    String MyMargin = 'abc';
+    double MyMarginAsADouble = double.parse(MyMargin);
+    try {
+      double MyMarginAsADouble = double.parse(MyMargin);
+    }
+    catch (e) {
+      print(e);
+
+    }
+      return Scaffold(
+        body: Container(
+          margin: EdgeInsets.all(MyMarginAsADouble ?? 30.0),
+          color: Colors.red,
+        ),
+      );
+    }
+
 }
