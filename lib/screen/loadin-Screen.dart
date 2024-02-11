@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:climate/locagtion.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -25,10 +27,11 @@ class _LoadinScreenState extends State<LoadinScreen> {
     print(location.longitude);
   }
   void getData() async{
-    http.Response response = await http.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}' as Uri);
+    http.Response response = await http.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API d22a4bc73c14175d023032fbddbfd054}' as Uri);
     if(response.statusCode ==200) {
       String data = response.body;
       print(data);
+      jsonDecode(data);
     } else {
     print(response.statusCode);
     }
