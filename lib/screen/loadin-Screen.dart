@@ -1,8 +1,11 @@
-import 'dart:convert';
 
 import 'package:climate/locagtion.dart';
+import 'package:climate/servecis/networking.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
+
+
+const apiKey = 'd22a4bc73c14175d023032fbddbfd054';
 
 
 class LoadinScreen extends StatefulWidget {
@@ -13,32 +16,28 @@ class LoadinScreen extends StatefulWidget {
 }
 
 class _LoadinScreenState extends State<LoadinScreen> {
+  late double latitude;
+  late double longitude;
   @override
   void initState(){
     super.initState();
-    getlocation();
-    print('this line of code is triggered');
-    getData();
+    getlocationData();
+
   }
-  Future<void> getlocation() async {
+  Future<void> getlocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
+    latitude = location.latitude;
+    longitude = location.longitude;
+    NetworkHelper networkHelper = NetworkHelper('https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey ');
+
+    void weatherData = await networkHelper.getData();
+
   }
-  void getData() async{
-    http.Response response = await http.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API d22a4bc73c14175d023032fbddbfd054}' as Uri);
-    if(response.statusCode ==200) {
-      String data = response.body;
-      print(data);
-      jsonDecode(data);
-    } else {
-    print(response.statusCode);
-    }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +50,6 @@ class _LoadinScreenState extends State<LoadinScreen> {
       print(e);
 
     }
-    getData();
       return Scaffold(
         body: Container(
           margin: EdgeInsets.all(MyMarginAsADouble ?? 30.0),
@@ -60,4 +58,3 @@ class _LoadinScreenState extends State<LoadinScreen> {
       );
     }
 
-}
